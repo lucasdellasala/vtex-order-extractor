@@ -9,7 +9,7 @@ cookies_input = input()
 
 lines = csv.reader(open('paso1.csv', 'r'), lineterminator='\n')
 
-url_order = 'https://mcdar.vtexcommercestable.com.br/api/oms/pvt/orders/'
+url_order = 'https://mcdecflexuat.vtexcommercestable.com.br/api/oms/pvt/orders/'
 cookies = dict(VtexIdclientAutCookie=cookies_input)
 
 c= csv.writer(open("paso2.csv", "w"), lineterminator='\n')
@@ -43,11 +43,11 @@ c.writerow([
 i=1
 
 for line in lines:
-	if i<1522:
-		i+=1
-		continue
+	#if i<470:
+	#	i+=1
+	#	continue
 		
-	print(str(i)+"/1744")
+	print(str(i)+"/1381")
 	print("Id: "+ line[0])
 	print('\n')
 
@@ -95,16 +95,31 @@ for line in lines:
 		payments_connectorResponses_acquirer = r['paymentData']['transactions'][0]['payments'][0]['connectorResponses']['acquirer']
 		payments_connectorResponses_message = r['paymentData']['transactions'][0]['payments'][0]['connectorResponses']['message']
 	except:
-		payments_Id = "No payment data"
-		payments_paymentSystemName = "No payment data"
-		payments_group = "No payment data"
-		payments_value = "No payment data"
-		payments_installments = "No payment data"
-		payments_referenceValue = "No payment data"
-		payments_connectorResponses_Tid = "No payment data"
-		payments_connectorResponses_ReturnCode = "No payment data"
-		payments_connectorResponses_acquirer = "No payment data"
-		payments_connectorResponses_message = "No payment data"
+		url_seller = 'https://'+sellersId+'.vtexcommercestable.com.br/api/oms/pvt/orders/'+sellerOrderId
+		print(url_seller)
+		r_seller = requests.get(url_seller, cookies=cookies).json()
+
+		payments_Id = r_seller['paymentData']['transactions'][0]['payments'][0]['id']
+		payments_paymentSystemName = r_seller['paymentData']['transactions'][0]['payments'][0]['paymentSystemName']
+		payments_group = r_seller['paymentData']['transactions'][0]['payments'][0]['group']
+		payments_value = r_seller['paymentData']['transactions'][0]['payments'][0]['value']
+		payments_installments = r_seller['paymentData']['transactions'][0]['payments'][0]['installments']
+		payments_referenceValue = r_seller['paymentData']['transactions'][0]['payments'][0]['referenceValue']
+		try:
+			payments_connectorResponses_Tid = r_seller['paymentData']['transactions'][0]['payments'][0]['connectorResponses']['Tid']
+			payments_connectorResponses_ReturnCode = r_seller['paymentData']['transactions'][0]['payments'][0]['connectorResponses']['ReturnCode']
+			payments_connectorResponses_acquirer = r_seller['paymentData']['transactions'][0]['payments'][0]['connectorResponses']['acquirer']
+			payments_connectorResponses_message = r_seller['paymentData']['transactions'][0]['payments'][0]['connectorResponses']['message']
+
+		except:
+			print('\n')
+			print(r_seller['paymentData']['transactions'][0]['payments'][0])
+			print('\n')
+			print('No payment data')
+			payments_connectorResponses_Tid = "No payment data"
+			payments_connectorResponses_ReturnCode = "No payment data"
+			payments_connectorResponses_message = "No payment data"
+			payments_connectorResponses_acquirer = "No payment data"
 
 	if payments_connectorResponses_message is None:
 		payments_connectorResponses_message = "null"

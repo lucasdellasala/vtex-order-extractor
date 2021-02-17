@@ -7,7 +7,7 @@ cookies_input = input()
 
 lines = csv.reader(open('paso2.csv', 'r'), lineterminator='\n')
 
-url_transactions = 'https://mcdar.myvtex.com/api/payments/pvt/admin/transactions/'
+url_transactions = 'https://mcdecflexuat.myvtex.com/api/payments/pvt/admin/transactions/'
 url_end = '/payments'
 cookies = dict(VtexIdclientAutCookie=cookies_input)
 
@@ -78,6 +78,6 @@ for line in lines:
 		payments_connectorResponses_message
     ])
 
-    print(str(i)+"/1745")
+    print(str(i)+"/1380")
     print("\n")
     i+=1
