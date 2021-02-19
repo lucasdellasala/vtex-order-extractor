@@ -17,30 +17,32 @@ i=1
 
 for line in lines:
     orderId = line[0]
-    sequence = line[1]
-    sellerOrderId = line[2]
-    hostname = line[3]
-    sellersId = line[4]
-    status = line[5]
-    creationDate_date = line[6]
-    creationDate_time = line[7]
-    email = line[8]
-    firstName = line[9]
-    lastName = line[10]
-    document = line[11]
-    transactionId = line[12]
-    payments_Id = line[13]
-    payments_paymentSystemName = line[14]
-    payments_group = line[15]
-    payments_value = line[16]
-    payments_installments = line[17]
-    payments_referenceValue = line[18]
-    payments_connectorResponses_Tid = line[19]
-    payments_connectorResponses_ReturnCode = line[20]
-    payments_connectorResponses_acquirer = line[21]
-    payments_connectorResponses_message = line[22]
+    url = line[1]
+    sequence = line[2]
+    sellerOrderId = line[3]
+    hostname = line[4]
+    sellersId = line[5]
+    status = line[6]
+    creationDate_date = line[7]
+    creationDate_time = line[8]
+    email = line[9]
+    firstName = line[10]
+    lastName = line[11]
+    document = line[12]
+    transactionId = line[13]
+    payments_Id = line[14]
+    payments_paymentSystemName = line[15]
+    payments_group = line[16]
+    payments_value = line[17]
+    payments_installments = line[18]
+    payments_referenceValue = line[19]
+    payments_lastDigits = line[20]
+    payments_connectorResponses_Tid = line[21]
+    payments_connectorResponses_ReturnCode = line[22]
+    payments_connectorResponses_acquirer = line[23]
+    payments_connectorResponses_message = line[24]
 
-    if line[22]=="null":
+    if line[24]=="null":
         new_url = url_transactions + transactionId + url_end
         r = requests.get(new_url, cookies=cookies).json()
         try:            
@@ -54,6 +56,7 @@ for line in lines:
         
     c.writerow([
 		orderId,
+        url,
 		sequence,
 		sellerOrderId,
 		hostname,
@@ -72,6 +75,7 @@ for line in lines:
 		payments_value,
 		payments_installments,
 		payments_referenceValue,
+        payments_lastDigits,
 		payments_connectorResponses_Tid,
 		payments_connectorResponses_ReturnCode,
 		payments_connectorResponses_acquirer,

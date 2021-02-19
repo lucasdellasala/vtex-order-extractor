@@ -16,6 +16,7 @@ c= csv.writer(open("paso2.csv", "w"), lineterminator='\n')
 
 c.writerow([
 		'orderId',
+		'url',
 		'sequence',
 		'sellerOrderId',
 		'hostname',
@@ -34,6 +35,7 @@ c.writerow([
 		'payments_value',
 		'payments_installments',
 		'payments_referenceValue',
+		'payments_lastDigits',
 		'payments_connectorResponses_Tid',
 		'payments_connectorResponses_ReturnCode',
 		'payments_connectorResponses_acquirer',
@@ -43,7 +45,7 @@ c.writerow([
 i=1
 
 for line in lines:
-	#if i<470:
+	#if i<341:
 	#	i+=1
 	#	continue
 		
@@ -82,40 +84,44 @@ for line in lines:
 	lastName = r['clientProfileData']['lastName']
 	document = r['clientProfileData']['document']
 	transactionId = r['paymentData']['transactions'][0]['transactionId']
-	
+		
+	url_seller_used = False
+
 	try:
+		print('NewUrl')
+		print(new_url)
 		payments_Id = r['paymentData']['transactions'][0]['payments'][0]['id']
 		payments_paymentSystemName = r['paymentData']['transactions'][0]['payments'][0]['paymentSystemName']
 		payments_group = r['paymentData']['transactions'][0]['payments'][0]['group']
 		payments_value = r['paymentData']['transactions'][0]['payments'][0]['value']
 		payments_installments = r['paymentData']['transactions'][0]['payments'][0]['installments']
 		payments_referenceValue = r['paymentData']['transactions'][0]['payments'][0]['referenceValue']
+		payments_lastDigits = r['paymentData']['transactions'][0]['payments'][0]['lastDigits']
 		payments_connectorResponses_Tid = r['paymentData']['transactions'][0]['payments'][0]['connectorResponses']['Tid']
 		payments_connectorResponses_ReturnCode = r['paymentData']['transactions'][0]['payments'][0]['connectorResponses']['ReturnCode']
 		payments_connectorResponses_acquirer = r['paymentData']['transactions'][0]['payments'][0]['connectorResponses']['acquirer']
 		payments_connectorResponses_message = r['paymentData']['transactions'][0]['payments'][0]['connectorResponses']['message']
 	except:
-		url_seller = 'https://'+sellersId+'.vtexcommercestable.com.br/api/oms/pvt/orders/'+sellerOrderId
-		print(url_seller)
-		r_seller = requests.get(url_seller, cookies=cookies).json()
-
-		payments_Id = r_seller['paymentData']['transactions'][0]['payments'][0]['id']
-		payments_paymentSystemName = r_seller['paymentData']['transactions'][0]['payments'][0]['paymentSystemName']
-		payments_group = r_seller['paymentData']['transactions'][0]['payments'][0]['group']
-		payments_value = r_seller['paymentData']['transactions'][0]['payments'][0]['value']
-		payments_installments = r_seller['paymentData']['transactions'][0]['payments'][0]['installments']
-		payments_referenceValue = r_seller['paymentData']['transactions'][0]['payments'][0]['referenceValue']
 		try:
+			url_seller = 'https://'+sellersId+'.vtexcommercestable.com.br/api/oms/pvt/orders/'+sellerOrderId
+			url_seller_used = True
+			print('UrlSeller')
+			print(url_seller)
+			r_seller = requests.get(url_seller, cookies=cookies).json()
+			status = r_seller['status']
+			payments_Id = r_seller['paymentData']['transactions'][0]['payments'][0]['id']
+			payments_paymentSystemName = r_seller['paymentData']['transactions'][0]['payments'][0]['paymentSystemName']
+			payments_group = r_seller['paymentData']['transactions'][0]['payments'][0]['group']
+			payments_value = r_seller['paymentData']['transactions'][0]['payments'][0]['value']
+			payments_installments = r_seller['paymentData']['transactions'][0]['payments'][0]['installments']
+			payments_referenceValue = r_seller['paymentData']['transactions'][0]['payments'][0]['referenceValue']
+			payments_lastDigits = r_seller['paymentData']['transactions'][0]['payments'][0]['lastDigits']
 			payments_connectorResponses_Tid = r_seller['paymentData']['transactions'][0]['payments'][0]['connectorResponses']['Tid']
 			payments_connectorResponses_ReturnCode = r_seller['paymentData']['transactions'][0]['payments'][0]['connectorResponses']['ReturnCode']
 			payments_connectorResponses_acquirer = r_seller['paymentData']['transactions'][0]['payments'][0]['connectorResponses']['acquirer']
 			payments_connectorResponses_message = r_seller['paymentData']['transactions'][0]['payments'][0]['connectorResponses']['message']
 
 		except:
-			print('\n')
-			print(r_seller['paymentData']['transactions'][0]['payments'][0])
-			print('\n')
-			print('No payment data')
 			payments_connectorResponses_Tid = "No payment data"
 			payments_connectorResponses_ReturnCode = "No payment data"
 			payments_connectorResponses_message = "No payment data"
@@ -143,14 +149,24 @@ for line in lines:
 	payments_value = "null" if payments_value is None else payments_value
 	payments_installments = "null" if payments_installments is None else payments_installments
 	payments_referenceValue = "null" if payments_referenceValue is None else payments_referenceValue
+	payments_lastDigits = "null" if payments_lastDigits is None else payments_lastDigits
 	payments_connectorResponses_Tid = "null" if payments_connectorResponses_Tid is None else payments_connectorResponses_Tid
 	payments_connectorResponses_ReturnCode = "null" if payments_connectorResponses_ReturnCode is None else payments_connectorResponses_ReturnCode
 	payments_connectorResponses_acquirer = "null" if payments_connectorResponses_acquirer is None else payments_connectorResponses_acquirer 
 	payments_connectorResponses_message = "null" if payments_connectorResponses_message is None else payments_connectorResponses_message 
-
+	
+	#Creo la url (nueva columna) para poder consultarla individualmente con postman
+	print(url_seller_used)
+	print('\n')
+	if url_seller_used is False:
+		url = new_url
+	else:
+		url = url_seller
+	
 	#Escribo cada columna para una fila
 	c.writerow([
 		orderId,
+		url,
 		sequence,
 		sellerOrderId,
 		hostname,
@@ -169,6 +185,7 @@ for line in lines:
 		payments_value,
 		payments_installments,
 		payments_referenceValue,
+		payments_lastDigits,
 		payments_connectorResponses_Tid,
 		payments_connectorResponses_ReturnCode,
 		payments_connectorResponses_acquirer,

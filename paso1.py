@@ -5,7 +5,7 @@ import json
 print("Enter your cookies: \n")
 cookies_input = input()
 
-url_list = 'https://mcdecflexuat.vtexcommercestable.com.br/api/oms/pvt/orders?per_page=100&f_creationDate=creationDate:[2021-01-24T03:00:00.000Z TO 2021-02-01T02:59:59.000Z]&incompleteOrders=true&per_page=100'
+url_list = 'https://mcdecflexuat.vtexcommercestable.com.br/api/oms/pvt/orders?per_page=100&f_creationDate=creationDate:[2021-01-24T03:00:00.000Z TO 2021-02-01T02:59:59.000Z]&incompleteOrders=false&per_page=100'
 cookies = dict(VtexIdclientAutCookie=cookies_input)
 pages = 0
 
