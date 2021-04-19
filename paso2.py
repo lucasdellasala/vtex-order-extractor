@@ -12,7 +12,7 @@ lines = csv.reader(open('paso1.csv', 'r'), lineterminator='\n')
 url_order = 'https://mcdecflexuat.vtexcommercestable.com.br/api/oms/pvt/orders/'
 cookies = dict(VtexIdclientAutCookie=cookies_input)
 
-c= csv.writer(open("paso2.csv", "w"), lineterminator='\n')
+c= csv.writer(open("paso2_1.csv", "w"), lineterminator='\n')
 
 c.writerow([
 		'orderId',
@@ -45,9 +45,9 @@ c.writerow([
 i=1
 
 for line in lines:
-	#if i<341:
-	#	i+=1
-	#	continue
+	if i<1855:
+		i+=1
+		continue
 		
 	print(str(i)+"/1381")
 	print("Id: "+ line[0])

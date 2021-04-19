@@ -4,8 +4,11 @@ import json
 
 print("Enter your cookies: \n")
 cookies_input = input()
-
-url_list = 'https://mcdecflexuat.vtexcommercestable.com.br/api/oms/pvt/orders?per_page=100&f_creationDate=creationDate:[2021-01-24T03:00:00.000Z TO 2021-02-01T02:59:59.000Z]&incompleteOrders=false&per_page=100'
+print("Enter the account name:\n")
+account= input()
+print("Do you want incomplete orders?\n write 'true' if you want, and 'false' if not.\n")
+incompleteOrders= input()
+url_list = 'https://'+account+'.vtexcommercestable.com.br/api/oms/pvt/orders?per_page=100&f_creationDate=creationDate:[2021-03-01T03:00:00.000Z TO 2021-03-11T02:59:59.000Z]&incompleteOrders='+incompleteOrders+'&per_page=100'
 cookies = dict(VtexIdclientAutCookie=cookies_input)
 pages = 0
 

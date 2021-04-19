@@ -16,6 +16,7 @@ c= csv.writer(open("final.csv", "w"), lineterminator='\n')
 i=1
 
 for line in lines:
+
     orderId = line[0]
     url = line[1]
     sequence = line[2]
@@ -82,6 +83,6 @@ for line in lines:
 		payments_connectorResponses_message
     ])
 
-    print(str(i)+"/1380")
+    print(str(i)+"/2615")
     print("\n")
     i+=1
