@@ -14,4 +14,3 @@ Para utilizar este script es necesario tener instalado python3, pypi3 y las libr
  6. Ejecutar el segundo script colocando: python3 paso3.py en la consola.
  7. Verificar que se ha creado correctamente el archivo final.csv y que no hubo errores en la consola.
  
-![enter image description here](https://cdn.worldvectorlogo.com/logos/vtex-1.svg)
